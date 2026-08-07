@@ -1,7 +1,5 @@
--- Internship Market Tracker: database schema
--- Run this once to create the empty database structure.
--- Order matters here: a table has to exist before another table
--- can reference it with a foreign key.
+-- internship tracker schema
+-- run once to set up the database
 
 CREATE TABLE companies (
     company_id  INTEGER PRIMARY KEY,

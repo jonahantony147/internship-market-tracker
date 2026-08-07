@@ -1,9 +1,4 @@
-"""
-Quick exploratory look at the raw listings.json feed before designing
-the database schema. Run this yourself in Spyder to poke around further,
-the point isn't the output, it's getting a feel for what the real data
-looks like so the schema fits reality instead of guesswork.
-"""
+"""Quick look at the raw listings feed before designing the schema."""
 import json
 from datetime import datetime, timezone
 

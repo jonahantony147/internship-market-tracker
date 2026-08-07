@@ -1,11 +1,4 @@
-"""
-Fetches the current internship listings and loads them into tracker.db.
-
-Safe to run more than once, INSERT OR IGNORE means re-running this on data
-we've already stored just skips the duplicates instead of erroring out.
-The only thing that grows every run is one new row per posting in
-`snapshots`, dated with today's date, that's what builds history over time.
-"""
+"""Pulls current internship listings and loads them into tracker.db. Safe to re-run, duplicates get skipped."""
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,10 +10,7 @@ SOURCE_URL = (
     "Summer2027-Internships/dev/.github/scripts/listings.json"
 )
 
-# Find data/tracker.db relative to this script's own location on disk,
-# instead of relative to whatever folder happens to be "current" when it
-# runs. That "current directory" changes depending on how you run it
-# (Spyder, VS Code, a terminal), which is exactly what broke last time.
+# resolve relative to this file, not whatever the cwd happens to be
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "data" / "tracker.db"
 
@@ -32,12 +22,11 @@ def fetch_listings() -> list[dict]:
 
 
 def get_or_create_company(cur, name: str, company_url: str) -> int:
-    # try to insert; if the name already exists, this silently does nothing
+    # insert if new, ignore if it already exists, then look up the id
     cur.execute(
         "INSERT OR IGNORE INTO companies (name, company_url) VALUES (?, ?)",
         (name, company_url),
     )
-    # then look up the id either way, whether we just created it or it already existed
     cur.execute("SELECT company_id FROM companies WHERE name = ?", (name,))
     return cur.fetchone()[0]
 
@@ -84,7 +73,6 @@ def main() -> None:
 
     conn.commit()
 
-    # quick sanity check printed at the end
     for table in ["companies", "postings", "posting_locations", "snapshots"]:
         cur.execute(f"SELECT COUNT(*) FROM {table}")
         print(f"{table}: {cur.fetchone()[0]} rows")
