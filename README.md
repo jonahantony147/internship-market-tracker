@@ -20,6 +20,12 @@ Daily snapshots of [SimplifyJobs/Summer2027-Internships](https://github.com/Simp
 internship-market-tracker/
   data/       # tracker.db
   src/        # ingestion, schema, analysis
-  notebooks/  # exploration
+  charts/     # generated chart images
   .github/workflows/
 ```
+
+## Findings (so far)
+
+Postings skew heavily toward AI/ML/Data (~44%) and Software (~32%), with Hardware, Product, and Quant roles making up smaller shares. Posting duration and monthly timing trends are still thin since the tracker's only been collecting daily snapshots for a few days — those numbers will get more meaningful as more data builds up.
+
+See `charts/` for the current breakdowns.
